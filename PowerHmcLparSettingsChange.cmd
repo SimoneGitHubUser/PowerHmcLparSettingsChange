@@ -1,8 +1,10 @@
+#Version 0.1.0
+
 @echo off
 rem setLocal EnableDelayedExpansion
 
 set localdir=%cd%
-set plinkdir="C:\_Appoggio\Putty"
+rem set plinkdir="C:\_Appoggio\Putty"
 set tempfolder=tmp
 
 FOR /F "tokens=1" %%A IN (%localdir%\_var_hmc_ip.txt) DO set hmc_ip=%%A
@@ -16,7 +18,7 @@ FOR /F "tokens=1" %%H IN (%localdir%\_var_lpar_on_state.txt) DO set lpar_on_stat
 FOR /F "tokens=1" %%I IN (%localdir%\_var_seconds_wait_01.txt) DO set seconds_wait_01=%%I
 FOR /F "tokens=1" %%L IN (%localdir%\_var_lpar_parameter.txt) DO set lpar_parameter=%%L
 FOR /F "tokens=1" %%M IN (%localdir%\_var_lpar_parameter_set_value.txt) DO set lpar_parameter_set_value=%%M
-
+FOR /F "delims=1" %%N IN (%localdir%\vars\plink_dir.txt) DO set plink_dir=%%N
 
 	Rem DOSWindowResizing
 rem	mode con:cols=80 lines=30
