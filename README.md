@@ -18,7 +18,7 @@ PowerHmcLparSettingsChange, can manage this changes for you!
 
 ## What do you need?
 * Ip address, user and passowrd of HMC
-* Basic informations related to the IBMi lpar you want to modofy settings.
+* Basic informations related to the IBMi lpar you want to modify settings.
 * plink.exe
 
 This is all you need. 
@@ -33,7 +33,7 @@ Plink.exe file must be placed in the following folder
 2) ssh connection and remote commands execution, must be enabled on HMC
 https://www.ibm.com/support/pages/hmc-enhanced-view-enabling-sshremote-command-execution
 
-3) Check and fill required vars (edit txt files)
+3) Check and fill required value in ../vars folder (edit txt files)...Check _sample_ files for correct fill.
 
 ## How it works?
 1) Complete Initial Settings

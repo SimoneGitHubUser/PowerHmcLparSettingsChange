@@ -1,0 +1,1 @@
+Remove all text, and fill with profile name to be used on lpar activation, no extra character or free spaces

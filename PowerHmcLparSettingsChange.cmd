@@ -1,23 +1,25 @@
-#Version 0.1.0
+
 
 @echo off
 rem setLocal EnableDelayedExpansion
-
+set version=0.1.1
 set localdir=%cd%
 rem set plinkdir="C:\_Appoggio\Putty"
 set tempfolder=tmp
 
-FOR /F "tokens=1" %%A IN (%localdir%\_var_hmc_ip.txt) DO set hmc_ip=%%A
-FOR /F "tokens=1" %%B IN (%localdir%\_var_hmc_user.txt) DO set hmc_user=%%B
-FOR /F "tokens=1" %%C IN (%localdir%\_var_hmc_password.txt) DO set hmc_password=%%C
-FOR /F "tokens=1" %%D IN (%localdir%\_var_lpar_id.txt) DO set lpar_id=%%D
-FOR /F "tokens=1" %%E IN (%localdir%\_var_lpar_profile.txt) DO set lpar_profile=%%E
-FOR /F "tokens=1" %%F IN (%localdir%\_var_managed_server_name.txt) DO set managed_server_name=%%F
-FOR /F "delims=" %%G IN (%localdir%\_var_lpar_off_state.txt) DO set lpar_off_state=%%G
-FOR /F "tokens=1" %%H IN (%localdir%\_var_lpar_on_state.txt) DO set lpar_on_state=%%H
-FOR /F "tokens=1" %%I IN (%localdir%\_var_seconds_wait_01.txt) DO set seconds_wait_01=%%I
-FOR /F "tokens=1" %%L IN (%localdir%\_var_lpar_parameter.txt) DO set lpar_parameter=%%L
-FOR /F "tokens=1" %%M IN (%localdir%\_var_lpar_parameter_set_value.txt) DO set lpar_parameter_set_value=%%M
+FOR /F "tokens=1" %%A IN (%localdir%\vars\hmc_ip.txt) DO set hmc_ip=%%A
+
+FOR /F "tokens=1" %%A IN (%localdir%\vars\hmc_ip.txt) DO set hmc_ip=%%A
+FOR /F "tokens=1" %%B IN (%localdir%\vars\hmc_user.txt) DO set hmc_user=%%B
+FOR /F "tokens=1" %%C IN (%localdir%\vars\hmc_password.txt) DO set hmc_password=%%C
+FOR /F "tokens=1" %%D IN (%localdir%\vars\lpar_id.txt) DO set lpar_id=%%D
+FOR /F "tokens=1" %%E IN (%localdir%\vars\lpar_profile.txt) DO set lpar_profile=%%E
+FOR /F "tokens=1" %%F IN (%localdir%\vars\managed_server_name.txt) DO set managed_server_name=%%F
+FOR /F "delims=" %%G IN (%localdir%\vars\lpar_off_state.txt) DO set lpar_off_state=%%G
+FOR /F "tokens=1" %%H IN (%localdir%\vars\lpar_on_state.txt) DO set lpar_on_state=%%H
+FOR /F "tokens=1" %%I IN (%localdir%\vars\seconds_wait_01.txt) DO set seconds_wait_01=%%I
+FOR /F "tokens=1" %%L IN (%localdir%\vars\lpar_parameter.txt) DO set lpar_parameter=%%L
+FOR /F "tokens=1" %%M IN (%localdir%\vars\lpar_parameter_set_value.txt) DO set lpar_parameter_set_value=%%M
 FOR /F "delims=1" %%N IN (%localdir%\vars\plink_dir.txt) DO set plink_dir=%%N
 
 	Rem DOSWindowResizing
@@ -38,7 +40,7 @@ REM %%V
 REM %%U
 
 
-title HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%
+title V.%version%_HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%
 
 
 pause
@@ -214,7 +216,7 @@ echo %date%_%time% ### CheckLparStatus	 >>%localdir%\HMC_%hmc_ip%_%managed_serve
 echo %date%_%time% ### VerifyLparStatus01	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 
 REM Remove blank spaces from lpar state files
-@If Exist "%localdir%\_var_lpar_off_state.txt" (For /F Delims^=^ EOL^= %%W In ('More /T1 "%localdir%\_var_lpar_off_state.txt"')Do @Set "$=%%W"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\_var_lpar_off_state_01.txt"
+@If Exist "%localdir%\vars\lpar_off_state.txt" (For /F Delims^=^ EOL^= %%W In ('More /T1 "%localdir%\vars\lpar_off_state.txt"')Do @Set "$=%%W"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\_var_lpar_off_state_01.txt"
 @If Exist "%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt" (For /F Delims^=^ EOL^= %%X In ('More /T1 "%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt"')Do @Set "$=%%X"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\_var_lpar_off_state_02.txt"
 
 REM Import lpar states from files (without blanks)
@@ -314,7 +316,7 @@ echo %date%_%time% ### CheckLparStatus02	 >>%localdir%\HMC_%hmc_ip%_%managed_ser
 echo %date%_%time% ### VerifyLparStatus02	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 
 REM Remove blank spaces from lpar state files
-@If Exist "%localdir%\_var_lpar_on_state.txt" (For /F Delims^=^ EOL^= %%W In ('More /T1 "%localdir%\_var_lpar_on_state.txt"')Do @Set "$=%%W"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\_var_lpar_on_state_01.txt"
+@If Exist "%localdir%\vars\lpar_on_state.txt" (For /F Delims^=^ EOL^= %%W In ('More /T1 "%localdir%\vars\lpar_on_state.txt"')Do @Set "$=%%W"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\_var_lpar_on_state_01.txt"
 @If Exist "%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt" (For /F Delims^=^ EOL^= %%X In ('More /T1 "%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt"')Do @Set "$=%%X"&Call Echo(%%$: =%%)>"%localdir%\%tempfolder%\_var_lpar_on_state_02.txt"
 
 REM Import lpar states from files (without blanks)
