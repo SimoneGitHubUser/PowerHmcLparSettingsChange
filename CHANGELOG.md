@@ -1,3 +1,6 @@
+#Version 0.1.2
+* Fixed "plink_dir" var error
+
 #Version 0.1.1
 * Version identify
 * README updates

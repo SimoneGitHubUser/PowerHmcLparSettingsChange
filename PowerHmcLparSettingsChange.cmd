@@ -2,9 +2,9 @@
 
 @echo off
 rem setLocal EnableDelayedExpansion
-set version=0.1.1
+set version=0.1.2
 set localdir=%cd%
-rem set plinkdir="C:\_Appoggio\Putty"
+rem set plink_dir="C:\_Appoggio\Putty"
 set tempfolder=tmp
 
 FOR /F "tokens=1" %%A IN (%localdir%\vars\hmc_ip.txt) DO set hmc_ip=%%A
@@ -118,7 +118,7 @@ echo ..
 	
 	
 	
-	%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% whoami >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_HmcPromptCheck.txt
+	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% whoami >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_HmcPromptCheck.txt
 	FOR /F "delims=" %%T IN (%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_HmcPromptCheck.txt) DO set _HmcPromptCheck=%%T
 	
 	echo .
@@ -129,8 +129,8 @@ echo ..
 	:ManagedServerCheck
 	echo %date%_%time% ### ManagedServerCheck	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 	
-	%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-	%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_ManagedServerCheck.txt																
+	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r sys -F name >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_ManagedServerCheck.txt																
 	
 	
 	findstr /m "%managed_server_name%" %localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_ManagedServerCheck.txt >Nul
@@ -154,8 +154,8 @@ echo ..
 	:LparCheck
 	
 	echo %date%_%time% ### LparCheck	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-	%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-	%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_LparCheck.txt												
+	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+	%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% -F lpar_id >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_LparCheck.txt												
 	
 		for /f "delims=" %%a in (%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_LparCheck.txt) do set var=%%a&call :process
 		goto :ExitLparCheckFailed
@@ -203,13 +203,13 @@ echo ..
 :CheckLparReferenceCode01
 
 echo %date%_%time% ### CheckLparReferenceCode01	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lsrefcode -r lpar -m %managed_server_name% -n 1 --filter "lpar_ids=%lpar_id%" >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lsrefcode -r lpar -m %managed_server_name% -n 1 --filter "lpar_ids=%lpar_id%" >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 :EndCheckLparReferenceCode01
 
 :CheckLparStatus01
 echo %date%_%time% ### CheckLparStatus	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F name,lpar_id,state >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F state >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F name,lpar_id,state >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F state >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt
 :EndCheckLparStatus01
 
 :VerifyLparStatus01
@@ -245,7 +245,7 @@ goto :CheckLparReferenceCode01
 REM Check parameter, change value, and check after changed
 echo .. Lpar state is %lpar_off_state%
 echo %date%_%time% ### ChangeSettings	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F %lpar_parameter% >>%localdir%\%tempfolder%\_temp.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F %lpar_parameter% >>%localdir%\%tempfolder%\_temp.txt
 FOR /F "delims=" %%V IN (%localdir%\%tempfolder%\_temp.txt) DO set value01=%%V
 
 
@@ -256,12 +256,12 @@ echo Required %lpar_parameter% is....%lpar_parameter_set_value%
 
 if %lpar_parameter_set_value%==%value01% goto :Exit01
 
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% chsyscfg -r lpar -m %managed_server_name% -i 'lpar_id=%lpar_id%,%lpar_parameter%=%lpar_parameter_set_value%' >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% chsyscfg -r lpar -m %managed_server_name% -i 'lpar_id=%lpar_id%,%lpar_parameter%=%lpar_parameter_set_value%' >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 echo Submit change of %lpar_parameter% >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 echo Submit change of %lpar_parameter% 
 
 
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F %lpar_parameter% >>%localdir%\%tempfolder%\_temp.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F %lpar_parameter% >>%localdir%\%tempfolder%\_temp.txt
 FOR /F "delims=" %%U IN (%localdir%\%tempfolder%\_temp.txt) DO set value02=%%U
 
 echo Current %lpar_parameter% is.....%value02%>>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
@@ -296,20 +296,20 @@ goto :LparPowerOn
 
 :LparPowerOn
 echo %date%_%time% ### LparPowerOn	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% chsysstate -r lpar -m %managed_server_name% -o on --id %lpar_id% -f %lpar_profile% >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% chsysstate -r lpar -m %managed_server_name% -o on --id %lpar_id% -f %lpar_profile% >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 echo Submit Lpar Power on >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 echo Submit Lpar Power on 
 :EndLparPowerOn
 
 :CheckLparReferenceCode02
 echo %date%_%time% ### CheckLparReferenceCode02	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lsrefcode -r lpar -m %managed_server_name% -n 1 --filter "lpar_ids=%lpar_id%" >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lsrefcode -r lpar -m %managed_server_name% -n 1 --filter "lpar_ids=%lpar_id%" >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
 :EndCheckLparReferenceCode02
 
 :CheckLparStatus02
 echo %date%_%time% ### CheckLparStatus02	 >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F name,lpar_id,state >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
-%plinkdir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F state >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F name,lpar_id,state >>%localdir%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_log.txt
+%plink_dir%\plink.exe -l  %hmc_user% -pw %hmc_password% %hmc_ip% lssyscfg -r lpar -m %managed_server_name% --filter "lpar_ids=%lpar_id%" -F state >%localdir%\%tempfolder%\HMC_%hmc_ip%_%managed_server_name%_Lpar_id_%lpar_id%_state.txt
 :EndCheckLparStatus02
 
 :VerifyLparStatus02
